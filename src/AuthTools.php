@@ -22,6 +22,7 @@ class AuthTools
         return $guards;
     }
 
+
     /**
      * @throws AuthenticationException
      */
