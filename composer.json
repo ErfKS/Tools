@@ -1,0 +1,21 @@
+{
+    "name": "erfankatebsaber/tools",
+    "description": "laravel and php tools",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ErfanKatebSaber\\tools\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Erfan Kateb Saber",
+            "email": "kateberfan2@gmail.com"
+        }
+    ],
+
+    "require": {
+        "laravel/framework": ">=8.0"
+    }
+}
