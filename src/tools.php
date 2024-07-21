@@ -5,7 +5,7 @@ return [
     'auth'=>[
         'login_routes' => [
             /**
-             * guard name => route path
+             * guard name => route name
              */
             'web' => 'login',
 
@@ -45,6 +45,12 @@ return [
         ],
         'empty_chars' => [
             '‌',
+        ],
+        'words_to_change' => [
+            // from => to
+            'ي' => 'ی',
+            'ة' => 'ه',
+            'ك' => 'ک',
         ]
     ]
 
