@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use function PHPUnit\Framework\isNull;
 
 class AuthTools
 {
