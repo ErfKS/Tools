@@ -10,6 +10,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class AuthTools
 {
+    /**
+     * return all defined guards in `auth.php` config.
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#getallguards
+     * @return array
+     */
     public static function GetAllGuards():array{
         $guards = [];
         foreach (Config::get('auth.guards') as $guard => $value){
@@ -23,6 +28,8 @@ class AuthTools
 
 
     /**
+     * Returns user guard name by guard type ([see config](https://github.com/ErfKS/Tools/blob/master/README.md#auth_guard_name)).
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#getguardname
      * @throws AuthenticationException
      */
     public static function GetGuardName(?string $guard_type): ?string{
@@ -47,6 +54,8 @@ class AuthTools
     }
 
     /**
+     * Returns user model with info
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#getuser
      * @param ?string $guard_name
      * @param ?int $guard_id
      * @return ?Authenticatable
@@ -62,7 +71,8 @@ class AuthTools
     }
 
     /**
-     * get guard model
+     * Returns guard model from guard type
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#getmodel
      * @throws AuthenticationException
      * @return ?Authenticatable
      */
@@ -74,6 +84,8 @@ class AuthTools
     }
 
     /**
+     * Returns guard model from logged in guard type.
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#getcurrentmodel
      * @throws AuthenticationException
      * @return ?Authenticatable
      */
@@ -83,6 +95,12 @@ class AuthTools
         return self::GetModel($guard);
     }
 
+    /**
+     * Check is guard type exist or not.
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#existguard
+     * @param string $guard
+     * @return bool
+     */
     public static function ExistGuard(string $guard):bool{
         foreach (self::GetAllGuards() as $guard_item){
             if($guard_item === $guard){
@@ -92,6 +110,11 @@ class AuthTools
         return false;
     }
 
+    /**
+     * Returns logged in gurad type.
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#getcurrentguard
+     * @return string|null
+     */
     public static function GetCurrentGuard():?string{
         foreach (self::GetAllGuards() as $guard){
             if(Auth::guard($guard)->check()){
@@ -101,26 +124,32 @@ class AuthTools
         return null;
     }
 
+    /**
+     * Return founded near guard type.
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#findnearguard
+     * @param string $guard
+     * @return string|null
+     */
     public static function FindNearGuard(string $guard):?string{
-        $words = '';
-        $contain_guards = [];
-        foreach (str_split($guard) as $word){
-            $words .= strtolower($word);
-            $contain_guards = [];
-            foreach (self::GetAllGuards() as $guard_item){
-                echo $words . "\t".$guard_item."\n";
+        $words = $guard;
+        $foundedGuard = null;
+        $allGuards = self::GetAllGuards();
+        while (strlen($words)>0 && !isset($foundedGuard)){
+            foreach ($allGuards as $guard_item){
                 if(str_contains(strtolower($guard_item),$words)){
-                    $contain_guards[] = $guard_item;
+                    $foundedGuard = $guard_item;
+                    break;
                 }
             }
-            if(count($contain_guards)===1){
-                return $contain_guards[0];
-            }
+            $words = StrTools::RemoveLast($words);
         }
-        return count($contain_guards)>0?$contain_guards[0]:null;
+
+        return $foundedGuard;
     }
 
     /**
+     * Return logged in user model.
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#getcurrentuser
      * @return Authenticatable|null
      */
     public static function GetCurrentUser(): ?Authenticatable
@@ -128,11 +157,21 @@ class AuthTools
         return Auth::guard(self::GetCurrentGuard())->user();
     }
 
+    /**
+     * Logout for logged in user.
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#logout
+     * @return void
+     */
     public static function Logout():void
     {
         Auth::guard(self::GetCurrentGuard())->logout();
     }
 
+    /**
+     * Logout for logged in user and redirect to specific route ([see config](https://github.com/ErfKS/Tools/blob/master/README.md#login_routes)).
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#logoutredirect
+     * @return \Illuminate\Http\RedirectResponse|null
+     */
     public static function LogoutRedirect(): ?\Illuminate\Http\RedirectResponse
     {
         $guard_name = self::GetCurrentGuard();
@@ -141,16 +180,36 @@ class AuthTools
     }
 
     /**
+     * uses `Auth::attempt` function. if the result is `true`, so login out other guard type.
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#attemp
      * @throws AuthenticationException
      */
     public static function Attemp(string $guard, array $credentials = [], $remember = false): bool
     {
-        return Auth::guard(self::AnalyseCurrentGuard($guard))->attempt($credentials, $remember);
+        /* get real guard name */
+        $guard = self::AnalyseCurrentGuard($guard);
+
+        /* check & login */
+        $attemp = Auth::guard($guard)->attempt($credentials, $remember);
+
+        /* if is logged in, so we logout other guards */
+        if($attemp){
+            foreach (self::GetAllGuards() as $guard_item){
+                if($guard_item!==$guard){
+                    self::Logout();
+                }
+            }
+        }
+
+        /* return value */
+        return $attemp;
     }
 
     /**
      * check is current guard is exist or not.
+     *
      * if this guard is not exist, so we search this guard, if we not found, so use throw.
+     * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#analysecurrentguard
      * @param string $guard
      * @return string guard
      * @throws AuthenticationException

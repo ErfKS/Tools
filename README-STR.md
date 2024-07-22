@@ -1,5 +1,5 @@
 # StrTools
-This class include specific static functions to make easly string editing
+This class include specific static functions to make easily string editing
 ## List of content
 - [StrTools](#strtools)
   - [List of content](#list_of_content)
@@ -42,6 +42,10 @@ Returns user guard name by guard type ([see config](README.md#auth_guard_name)).
 example:
 ```php
 StrTools::GetGuardName('web');
+```
+result:
+```
+user
 ```
 ### GetLangAttribute
 Returns translated word by attribute part of `validation.php` language file.

@@ -251,7 +251,7 @@ class StrTools
     }
 
     /**
-     * Returns user guard name by guard type
+     * Returns user guard name by guard type ([see config](https://github.com/ErfKS/Tools/blob/master/README.md#auth_guard_name)).
      * @link https://github.com/ErfKS/Tools/blob/master/README-STR.md#getguardname
      * @param string $guard_type
      * @return string
@@ -267,7 +267,7 @@ class StrTools
     }
 
     /**
-     * Returns translated word by attribute part of `validation.php` language file ([see config](https://github.com/ErfKS/Tools/blob/master/README.md#auth_guard_name)).
+     * Returns translated word by attribute part of `validation.php` language file
      * @link https://github.com/ErfKS/Tools/blob/master/README-STR.md#getlangattribute
      * @param string $attr_name
      * @return array|\Illuminate\Foundation\Application|string|\Illuminate\Contracts\Translation\Translator|\Illuminate\Contracts\Foundation\Application|null
