@@ -20,8 +20,8 @@ php artisan vendor:publish --tag=tools
 ```
 ## Classes
 
-- [StrTools][link-str]: This class include specific static functions to make easly string editing
-- [AuthTools][link-auth]
+- [StrTools][link-str]: This class include specific static functions to make easly string editing.
+- [AuthTools][link-auth]: This class include specific static functions to make easily use laravel auth.
 
 ## Config
 After installing this package, the config file created into this path:
