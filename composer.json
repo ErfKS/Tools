@@ -3,6 +3,13 @@
     "description": "laravel and php tools",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "tools",
+        "laravel",
+        "auth",
+        "str",
+        "string"
+    ],
     "autoload": {
         "psr-4": {
             "ErfanKatebSaber\\tools\\": "src/"
