@@ -1,7 +1,27 @@
 # AuthTools
 This class include specific static functions to make easily use laravel auth.
 ## List of content
-
+- [AuthTools](#authtools)
+  - [List of content](#list_of_content)
+  - [Static Function](#static_function)
+    - [GetAllGuards](#getallguards)
+    - [GetGuardName](#getguardname)
+    - [GetUser](#getuser)
+    - [GetModel](#getmodel)
+      - [example 1](#example-1)
+      - [example 2](#example-2)
+    - [GetModel](#getmodel)
+    - [GetCurrentModel](#getcurrentmodel)
+    - [ExistGuard](#existguard)
+    - [GetCurrentGuard](#getcurrentguard)
+    - [FindNearGuard](#findnearguard)
+    - [GetCurrentUser](#getcurrentuser)
+    - [Logout](#logout)
+    - [LogoutRedirect](#logoutredirect)
+      - [example 1](#example-1-1)
+      - [example 2](#example-2-1)
+    - [Attemp](#attemp)
+    - [AnalyseCurrentGuard](#analysecurrentguard)
 ## Static Function
 ### GetAllGuards
 return all defined guards in `auth.php` config.
@@ -67,69 +87,7 @@ result:
 ```shell
 Illuminate\Database\Eloquent\Collection {
   #items: array:1 [
-    0 => App\Models\User {#5791
-      #connection: "mysql"
-      #table: "users"
-      #primaryKey: "id"
-      #keyType: "int"
-      +incrementing: true
-      #with: []
-      #withCount: []
-      +preventsLazyLoading: false
-      #perPage: 15
-      +exists: true
-      +wasRecentlyCreated: false
-      #escapeWhenCastingToString: false
-      #attributes: array:8 [
-        "id" => 1
-        "name" => "Elva Nicolas"
-        "email" => "millie03@example.com"
-        "email_verified_at" => "2024-07-20 22:34:40"
-        "password" => "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"
-        "remember_token" => "ZvwazcSKeR"
-        "created_at" => "2024-07-20 22:34:40"
-        "updated_at" => "2024-07-20 22:34:40"
-      ]
-      #original: array:8 [
-        "id" => 1
-        "name" => "Elva Nicolas"
-        "email" => "millie03@example.com"
-        "email_verified_at" => "2024-07-20 22:34:40"
-        "password" => "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"
-        "remember_token" => "ZvwazcSKeR"
-        "created_at" => "2024-07-20 22:34:40"
-        "updated_at" => "2024-07-20 22:34:40"
-      ]
-      #changes: []
-      #casts: array:1 [
-        "email_verified_at" => "datetime"
-      ]
-      #classCastCache: []
-      #attributeCastCache: []
-      #dates: []
-      #dateFormat: null
-      #appends: []
-      #dispatchesEvents: []
-      #observables: []
-      #relations: []
-      #touches: []
-      +timestamps: true
-      #hidden: array:2 [
-        0 => "password"
-        1 => "remember_token"
-      ]
-      #visible: []
-      #fillable: array:3 [
-        0 => "name"
-        1 => "email"
-        2 => "password"
-      ]
-      #guarded: array:1 [
-        0 => "*"
-      ]
-      #rememberTokenName: "remember_token"
-      #accessToken: null
-    }
+    0 => App\Models\User {...}
   ]
   #escapeWhenCastingToString: false
 }
@@ -298,7 +256,7 @@ example result (if `$credentials` has correct values):
 ```
 true
 ```
-### Attemp
+### AnalyseCurrentGuard
 check is current guard is exist or not.
 
 if this guard is not exist, so we search this guard, if we not found, so use throw.
