@@ -14,7 +14,14 @@ run this command:
 ```shell
 composer require kateberfan/tools
 ```
-After that, run this command to create config file:
+Next, add `ErfanKatebSaber\tools\ToolsProvider::class` into `config\app.php` file:
+```php
+'providers' => [
+    // other providers
+    ErfanKatebSaber\tools\ToolsProvider::class
+]
+```
+Then, run this command to create config file:
 ```shell
 php artisan vendor:publish --tag=tools
 ```

@@ -25,7 +25,7 @@ class ToolsProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../src/tools.php' => config_path('tools.php'),
-        ],'laravel-assets');
+        ],'tools');
     }
 
 
