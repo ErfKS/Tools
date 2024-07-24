@@ -1,3 +1,8 @@
+<p align="center">
+<a href="https://img.shields.io/packagist/dt/erfankatebsaber/tools"><img src="https://img.shields.io/packagist/dt/erfankatebsaber/tools" alt="Total Downloads"></a>
+<a href="https://img.shields.io/packagist/dt/erfankatebsaber/tools"><img src="https://img.shields.io/packagist/v/erfankatebsaber/tools" alt="Latest Stable Version"></a>
+<a href="https://img.shields.io/packagist/dt/erfankatebsaber/tools"><img src="https://img.shields.io/packagist/l/erfankatebsaber/tools" alt="License"></a>
+</p>
 
 # Tools
 This package include library classes with specific static function tools.
@@ -12,7 +17,7 @@ This package include library classes with specific static function tools.
 ## Install
 run this command:
 ```shell
-composer require kateberfan/tools
+composer require erfankatebsaber/tools
 ```
 Next, add `ErfanKatebSaber\tools\ToolsProvider::class` into `config\app.php` file:
 ```php

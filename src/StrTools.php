@@ -2,8 +2,6 @@
 
 namespace ErfanKatebSaber\tools;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 class StrTools
 {
     const NUMBERS = [
@@ -248,6 +246,21 @@ class StrTools
     public static function ConvertPersianNumbers(string $persianNumber): string
     {
         return strtr($persianNumber, config('tools.str.persian_numbers'));
+    }
+
+    /**
+     * Returns app parsed url
+     * @link https://github.com/ErfKS/Tools/blob/master/README-STR.md#gethosturl
+     * @param ?string $prefix add custom prefix
+     * @param int $component [optional] <p>
+     * @return array{scheme: string,host: string,post: int, user: string, pass: string, query: string, path: string, fragment: string}|false|int|string|null
+     */
+    public static function ParsCurrentUrl(?string $prefix = null, int $component = -1){
+        $parse_url = parse_url(config('app.url'),$component);
+        if(isset($prefix) && !static::HaveInFirst($parse_url['host'],$prefix)) {
+            $parse_url['host'] = $prefix.$parse_url['host'];
+        }
+        return $parse_url;
     }
 
     /**

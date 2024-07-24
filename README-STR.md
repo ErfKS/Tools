@@ -5,6 +5,7 @@ This class include specific static functions to make easily string editing
   - [List of content](#list_of_content)
   - [Static Function](#static_function)
     - [ConvertPersianNumbers](#convertpersiannumbers)
+    - [ParsCurrentUrl](#parscurrenturl)
     - [GetGuardName](#getguardname)
     - [GetLangAttribute](#getlangattribute)
     - [RemoveEmptyExplode](#eemoveemptyexplode)
@@ -35,6 +36,28 @@ StrTools::ConvertPersianNumbers('۰۱۲۳۴۵۶۷۸۹');
 result:
 ```
 0123456789
+```
+### ParsCurrentUrl
+converts persian numbers into english numbers
+example:
+```php
+dd(
+    StrTools::ParsCurrentUrl(),
+    StrTools::ParsCurrentUrl('www.'),
+)
+```
+result:
+```php
+[
+    "scheme" => "http",
+    "host" => "localhost",
+]
+```
+```php
+[
+    "scheme" => "http",
+    "host" => "www.localhost",
+]
 ```
 ### GetGuardName
 Returns user guard name by guard type ([see config](README.md#auth_guard_name)).
