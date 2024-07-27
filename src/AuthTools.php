@@ -33,7 +33,7 @@ class AuthTools
      * @throws AuthenticationException
      */
     public static function GetGuardName(?string $guard_type): ?string{
-        $guard_type = self::AnalyseCurrentGuard($guard_type)??null;
+        $guard_type = static::AnalyseCurrentGuard($guard_type)??null;
         return Config::get('tools.auth.auth_guard_name')[$guard_type]??$guard_type;
     }
 
@@ -66,7 +66,7 @@ class AuthTools
         if(!isset($guard_name)) {
             return null;
         }
-        $model = self::GetModel($guard_name);
+        $model = static::GetModel($guard_name);
         return $model::where('id','=',$guard_id)->get()->first();
     }
 
@@ -78,7 +78,7 @@ class AuthTools
      */
     public static function GetModel($guard): ?Authenticatable
     {
-        $guard = self::AnalyseCurrentGuard($guard);
+        $guard = static::AnalyseCurrentGuard($guard);
         $provider_props = self::GetProvider($guard);
         return App::make($provider_props['model'])??null;
     }
@@ -91,8 +91,8 @@ class AuthTools
      */
     public static function GetCurrentModel(): ?Authenticatable
     {
-        $guard = self::GetCurrentGuard();
-        return self::GetModel($guard);
+        $guard = static::GetCurrentGuard();
+        return static::GetModel($guard);
     }
 
     /**
@@ -102,7 +102,7 @@ class AuthTools
      * @return bool
      */
     public static function ExistGuard(string $guard):bool{
-        foreach (self::GetAllGuards() as $guard_item){
+        foreach (static::GetAllGuards() as $guard_item){
             if($guard_item === $guard){
                 return true;
             }
@@ -116,7 +116,7 @@ class AuthTools
      * @return string|null
      */
     public static function GetCurrentGuard():?string{
-        foreach (self::GetAllGuards() as $guard){
+        foreach (static::GetAllGuards() as $guard){
             if(Auth::guard($guard)->check()){
                 return $guard;
             }
@@ -133,7 +133,7 @@ class AuthTools
     public static function FindNearGuard(string $guard):?string{
         $words = $guard;
         $foundedGuard = null;
-        $allGuards = self::GetAllGuards();
+        $allGuards = static::GetAllGuards();
         while (strlen($words)>0 && !isset($foundedGuard)){
             foreach ($allGuards as $guard_item){
                 if(str_contains(strtolower($guard_item),$words)){
@@ -154,7 +154,7 @@ class AuthTools
      */
     public static function GetCurrentUser(): ?Authenticatable
     {
-        return Auth::guard(self::GetCurrentGuard())->user();
+        return Auth::guard(static::GetCurrentGuard())->user();
     }
 
     /**
@@ -164,7 +164,7 @@ class AuthTools
      */
     public static function Logout():void
     {
-        Auth::guard(self::GetCurrentGuard())->logout();
+        Auth::guard(static::GetCurrentGuard())->logout();
     }
 
     /**
@@ -174,7 +174,7 @@ class AuthTools
      */
     public static function LogoutRedirect(): ?\Illuminate\Http\RedirectResponse
     {
-        $guard_name = self::GetCurrentGuard();
+        $guard_name = static::GetCurrentGuard();
         Auth::guard($guard_name)->logout();
         return redirect()->route(config('tools.login_routes')[$guard_name]??(config('tools.login_routes.default')??'login'));
     }
@@ -187,16 +187,16 @@ class AuthTools
     public static function Attemp(string $guard, array $credentials = [], $remember = false): bool
     {
         /* get real guard name */
-        $guard = self::AnalyseCurrentGuard($guard);
+        $guard = static::AnalyseCurrentGuard($guard);
 
         /* check & login */
         $attemp = Auth::guard($guard)->attempt($credentials, $remember);
 
         /* if is logged in, so we logout other guards */
         if($attemp){
-            foreach (self::GetAllGuards() as $guard_item){
+            foreach (static::GetAllGuards() as $guard_item){
                 if($guard_item!==$guard){
-                    self::Logout();
+                    static::Logout();
                 }
             }
         }
@@ -216,10 +216,10 @@ class AuthTools
      */
     public static function AnalyseCurrentGuard(string $guard): string
     {
-        if(self::ExistGuard($guard)) {
+        if(static::ExistGuard($guard)) {
             return $guard;
         }
-        $find = self::FindNearGuard($guard);
+        $find = static::FindNearGuard($guard);
         if (isset($find)){
             report(new AuthenticationException("this guard ($guard) doese not exist, but we detect same guard: $find"));
             return $find;
@@ -229,6 +229,6 @@ class AuthTools
 
     public static function Check(): bool
     {
-        return self::GetCurrentGuard()!==null;
+        return static::GetCurrentGuard()!==null;
     }
 }

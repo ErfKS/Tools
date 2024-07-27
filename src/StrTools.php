@@ -402,7 +402,7 @@ class StrTools
      */
     public static function AutoChangeWord(string $value): string
     {
-        if(self::IsEmptyString($value)){
+        if(static::IsEmptyString($value)){
             return '';
         }
 
@@ -419,11 +419,11 @@ class StrTools
     public static function JustNumber(string $value,bool $withRepair = true): bool
     {
         if($withRepair) {
-            $value = self::RepairNumber($value);
+            $value = static::RepairNumber($value);
         }
         foreach (str_split($value) as $item){
             $is_not_number = false;
-            foreach (self::NUMBERS as $number){
+            foreach (static::NUMBERS as $number){
                 if($item == $number){
                     $is_not_number = true;
                     break;
@@ -446,9 +446,9 @@ class StrTools
     public static function JustPhoneNumber(string $value,bool $withRepair = true): bool
     {
         if($withRepair) {
-            $value = self::RepairNumber($value);
+            $value = static::RepairNumber($value);
         }
-        return self::JustNumber($value,false) && strlen($value) === 11;
+        return static::JustNumber($value,false) && strlen($value) === 11;
     }
 
     /**
@@ -502,7 +502,7 @@ class StrTools
      */
     public static function RepairNumber(string $value): string
     {
-        return strtr(self::ConvertPersianNumbers($value), config('tools.str.wrong_numbers'));
+        return strtr(static::ConvertPersianNumbers($value), config('tools.str.wrong_numbers'));
     }
 
     private static function getLastArray(array $value)
@@ -548,7 +548,7 @@ class StrTools
             $encode_val = urlencode($value);
             $res .= "$key=$encode_val&";
         }
-        return self::RemoveLast($res);
+        return static::RemoveLast($res);
     }
 
     /**
@@ -559,17 +559,17 @@ class StrTools
      */
     public static function RepairPhoneNumber(string $value): string
     {
-        $value = self::RepairNumber($value);
+        $value = static::RepairNumber($value);
 
-        $phoneCode = self::GetPhoneCode($value);
+        $phoneCode = static::GetPhoneCode($value);
 
         /* remove all spaces */
         $phone = str_replace(' ','',$value);
 
         /* convert local code into 0*/
         $phone = self::RemovePhonePlus($phone);
-        if(self::HaveInFirst($phone,$phoneCode['code'])) {
-            $phone = self::RemoveFirst($phone, strlen($phoneCode['code']));
+        if(static::HaveInFirst($phone,$phoneCode['code'])) {
+            $phone = static::RemoveFirst($phone, strlen($phoneCode['code']));
         }
 
         /* add 0 as a first char */
@@ -588,8 +588,8 @@ class StrTools
      */
     public static function GetPhoneCode(string $value): array{
         $value = self::RemovePhonePlus($value);
-        foreach (self::PHONE_NUMBERS as $name=>$phoneNumber){
-            if(self::HaveInFirst($value,$phoneNumber)){
+        foreach (static::PHONE_NUMBERS as $name=>$phoneNumber){
+            if(static::HaveInFirst($value,$phoneNumber)){
                 return [
                     'name' => $name,
                     'code' => $phoneNumber
@@ -608,13 +608,13 @@ class StrTools
      */
     public static function HaveInFirst(string $mainValue, string $searchValue): bool
     {
-        return self::GetFirst($mainValue,strlen($searchValue)) == $searchValue;
+        return static::GetFirst($mainValue,strlen($searchValue)) == $searchValue;
     }
 
     private static function RemovePhonePlus(string $value): string
     {
-        if(self::GetFirst($value) == '+'){
-            $value = self::RemoveFirst($value);
+        if(static::GetFirst($value) == '+'){
+            $value = static::RemoveFirst($value);
         }
         return $value;
     }
