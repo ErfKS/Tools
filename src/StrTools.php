@@ -264,6 +264,18 @@ class StrTools
     }
 
     /**
+     * Removes file format prefix
+     * @link https://github.com/ErfKS/Tools/blob/master/README-STR.md#removefileformat
+     * @param string $path
+     * @return string
+     */
+    public static function RemoveFileFormat(string $path): string
+    {
+        $extention = static::GetFileFormat($path);
+        return static::RemoveLast($path, strlen($extention)+1);
+    }
+
+    /**
      * Returns user guard name by guard type ([see config](https://github.com/ErfKS/Tools/blob/master/README.md#auth_guard_name)).
      * @link https://github.com/ErfKS/Tools/blob/master/README-STR.md#getguardname
      * @param string $guard_type

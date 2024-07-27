@@ -6,6 +6,7 @@ This class include specific static functions to make easily string editing
   - [Static Function](#static_function)
     - [ConvertPersianNumbers](#convertpersiannumbers)
     - [ParsCurrentUrl](#parscurrenturl)
+    - [RemoveFileFormat](#removefileformat)
     - [GetGuardName](#getguardname)
     - [GetLangAttribute](#getlangattribute)
     - [RemoveEmptyExplode](#eemoveemptyexplode)
@@ -58,6 +59,16 @@ result:
     "scheme" => "http",
     "host" => "www.localhost",
 ]
+```
+### RemoveFileFormat
+converts persian numbers into english numbers
+example:
+```php
+StrTools::RemoveFileFormat('file_path/file_name.format');
+```
+result:
+```
+file_path/file_name
 ```
 ### GetGuardName
 Returns user guard name by guard type ([see config](README.md#auth_guard_name)).
