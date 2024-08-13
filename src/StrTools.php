@@ -568,7 +568,7 @@ class StrTools
 
         /* convert local code into 0*/
         $phone = self::RemovePhonePlus($phone);
-        if(static::HaveInFirst($phone,$phoneCode['code'])) {
+        if(isset($phoneCode['code']) && static::HaveInFirst($phone,$phoneCode['code'])) {
             $phone = static::RemoveFirst($phone, strlen($phoneCode['code']));
         }
 
