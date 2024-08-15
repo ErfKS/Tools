@@ -196,7 +196,7 @@ class AuthTools
         if($attemp){
             foreach (static::GetAllGuards() as $guard_item){
                 if($guard_item!==$guard){
-                    static::Logout();
+                    Auth::guard($guard_item)->logout();
                 }
             }
         }
