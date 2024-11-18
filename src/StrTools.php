@@ -256,7 +256,7 @@ class StrTools
      */
     public static function removeCurrentUrlPort(string $url): string
     {
-        return self::removeUrlPort($url,request()->getPort());
+        return self::RemoveUrlPort($url,request()->getPort());
     }
 
     /**
