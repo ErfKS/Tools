@@ -249,6 +249,61 @@ class StrTools
     }
 
     /**
+     * remove port of request url
+     * @link https://github.com/ErfKS/Tools/blob/master/README-STR.md#removeurlport
+     * @param string $url url to remove port
+     * @return changed url
+     */
+    public static function removeCurrentUrlPort(string $url): string
+    {
+        return self::removeUrlPort($url,request()->getPort());
+    }
+
+    /**
+     * remove port of url
+     * @link https://github.com/ErfKS/Tools/blob/master/README-STR.md#removeurlport
+     * @param string $url url to remove port
+     * @param ?int $port port of url
+     * @return changed url
+     */
+    public static function RemoveUrlPort(string $url,?int $port=null):string{
+
+        $url_array = parse_url($url);
+
+        if(isset($port) && isset($url_array['port']) && $url_array['port'] == $port) {
+            return str_replace(':' . $port, '', $url);
+        }
+
+        return $url;
+    }
+
+    /**
+     * Replace http:// to https://
+     * @link https://github.com/ErfKS/Tools/blob/master/README-STR.md#converttohttps
+     * @param string $url url to change
+     * @return changed url
+     */
+    public static function ConvertToHttps(string $url): string
+    {
+        return str_replace('http://','https://',$url);
+    }
+
+    /**
+     * Returns first word of string
+     * @link https://github.com/ErfKS/Tools/blob/master/README-STR.md#getfirstword
+     * @param string $value
+     * @return string first word
+     */
+    public static function GetFirstWord(string $value): string
+    {
+        // جدا کردن دو کلمه
+        $words = explode(' ', $value);
+
+        // ذخیره کردن کلمه اول در متغیر
+        return $words[0];
+    }
+
+    /**
      * Returns app parsed url
      * @link https://github.com/ErfKS/Tools/blob/master/README-STR.md#gethosturl
      * @param ?string $prefix add custom prefix
