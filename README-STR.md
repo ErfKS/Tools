@@ -38,6 +38,46 @@ result:
 ```
 0123456789
 ```
+### removeCurrentUrlPort
+remove port of request url
+example:
+```php
+StrTools::removeCurrentUrlPort(),
+```
+result:
+```php
+http://127.0.0.1
+```
+### RemoveUrlPort
+remove port of url
+example:
+```php
+StrTools::RemoveUrlPort("http://127.0.0.1:8000",8000);
+```
+result:
+```php
+http://127.0.0.1
+```
+### ConvertToHttps
+Replace http:// to https://
+example:
+```php
+StrTools::ConvertToHttps("http://127.0.0.1:8000");
+```
+result:
+```php
+https://127.0.0.1:8000"
+```
+### GetFirstWord
+Returns first word of string
+example:
+```php
+StrTools::GetFirstWord("http://127.0.0.1:8000");
+```
+result:
+```php
+"h"
+```
 ### ParsCurrentUrl
 converts persian numbers into english numbers
 example:
