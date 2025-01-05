@@ -150,9 +150,9 @@ class AuthTools
     /**
      * Return logged in user model.
      * @link https://github.com/ErfKS/Tools/blob/master/README-AUTH.md#getcurrentuser
-     * @return Authenticatable|null
+     * @return Authenticatable|\Illuminate\Contracts\Auth\Authenticatable|null
      */
-    public static function GetCurrentUser(): ?Authenticatable
+    public static function GetCurrentUser()
     {
         return Auth::guard(static::GetCurrentGuard())->user();
     }
