@@ -186,25 +186,48 @@ class AuthTools
      */
     public static function Attemp(string $guard, array $credentials = [], $remember = false): bool
     {
-        /* get real guard name */
         $guard = static::AnalyseCurrentGuard($guard);
 
-        /* check & login */
-        $attemp = Auth::guard($guard)->attempt($credentials, $remember);
+        try {
+            // Attempt to log in with the given guard and credentials
+            $attempt = Auth::guard($guard)->attempt($credentials, $remember);
+        } catch (\RuntimeException $ex) {
+            // If the exception indicates a non-Bcrypt password prefix
+            if (str_contains($ex->getMessage(), 'does not use the Bcrypt algorithm')) {
+                // Retrieve the user model for this guard
+                $model = static::GetModel($guard);
+                $user  = $model::where('email', $credentials['email'])->first();
 
-        /* if is logged in, so we logout other guards */
-        if($attemp){
-            foreach (static::GetAllGuards() as $guard_item){
-                if($guard_item!==$guard){
+                // If the password starts with the old "$2a$" prefix
+                if ($user && str_starts_with($user->password, '$2a$')) {
+                    // Replace the first 4 characters ("$2a$") with the correct "$2y$"
+                    $user->password = '$2y$' . substr($user->password, 4);
+                    $user->save();
+
+                    // Retry the login attempt after prefix correction
+                    $attempt = Auth::guard($guard)->attempt($credentials, $remember);
+                } else {
+                    // Rethrow if it's not the specific prefix issue
+                    throw $ex;
+                }
+            } else {
+                // Rethrow any other RuntimeException
+                throw $ex;
+            }
+        }
+
+        if ($attempt) {
+            // If login was successful, log out all other guards
+            foreach (static::GetAllGuards() as $otherGuard) {
+                if ($otherGuard !== $guard) {
                     try {
-                        Auth::guard($guard_item)->logout();
-                    } catch (\Throwable $ex){}
+                        Auth::guard($otherGuard)->logout();
+                    } catch (\Throwable $ignore) {}
                 }
             }
         }
 
-        /* return value */
-        return $attemp;
+        return $attempt;
     }
 
     /**
